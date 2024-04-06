@@ -1,6 +1,9 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import {
+  AutocompleteDropdown,
+  AutocompleteDropdownRef,
+} from 'react-native-autocomplete-dropdown';
 
 import Icon from './Icon';
 
@@ -10,6 +13,7 @@ type SearchSuggestion = {
 };
 
 type SearchProps = {
+  style?: StyleProp<ViewStyle>;
   debounce?: number;
   loading?: boolean;
   placeholder?: string;
@@ -18,35 +22,48 @@ type SearchProps = {
   onSelectSuggestion?: (suggestion: SearchSuggestion) => void;
 };
 
-export default function Search({
-  debounce,
-  loading,
-  placeholder,
-  suggestions,
-}: SearchProps) {
+export type SearchRef = {
+  dismiss: () => void;
+};
+
+const Search = React.forwardRef<SearchRef, SearchProps>((props, ref) => {
+  const dropdown = React.useRef<AutocompleteDropdownRef | null>(null);
+  React.useImperativeHandle(ref, () => {
+    return {
+      dismiss() {
+        dropdown.current?.close();
+      },
+    };
+  });
   return (
-    <AutocompleteDropdown
-      inputHeight={36}
-      clearOnFocus={false}
-      dataSet={suggestions}
-      debounce={debounce}
-      loading={loading}
-      useFilter={false}
-      containerStyle={styles.container}
-      inputContainerStyle={styles.inputContainer}
-      rightButtonsContainerStyle={styles.rightButtonsContainer}
-      textInputProps={{
-        style: styles.input,
-        placeholder,
-      }}
-      LeftComponent={
-        <Icon containerStyle={styles.centered} name="search" size={18} />
-      }
-      ClearIconComponent={<Icon name="x-circle" size={16} />}
-      ChevronIconComponent={<Icon name="chevron-down" size={16} />}
-    />
+    <View style={[styles.container, props.style]}>
+      <AutocompleteDropdown
+        controller={(controller) => {
+          dropdown.current = controller;
+        }}
+        inputHeight={36}
+        clearOnFocus={false}
+        dataSet={props.suggestions}
+        debounce={props.debounce}
+        loading={props.loading}
+        useFilter={false}
+        inputContainerStyle={styles.inputContainer}
+        rightButtonsContainerStyle={styles.rightButtonsContainer}
+        textInputProps={{
+          style: styles.input,
+          placeholder: props.placeholder,
+        }}
+        LeftComponent={
+          <Icon containerStyle={styles.centered} name="search" size={18} />
+        }
+        ClearIconComponent={<Icon name="x-circle" size={16} />}
+        ChevronIconComponent={<Icon name="chevron-down" size={16} />}
+      />
+    </View>
   );
-}
+});
+
+export default Search;
 
 const styles = StyleSheet.create({
   centered: {

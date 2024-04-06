@@ -1,8 +1,17 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import {
+  Keyboard,
+  KeyboardEventName,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  useColorScheme,
+} from 'react-native';
 import { AutocompleteDropdownContextProvider } from 'react-native-autocomplete-dropdown';
 
-import Search from './Search';
+import Search, { type SearchRef } from './Search';
 
 type Item = {
   id: string;
@@ -18,23 +27,61 @@ for (let i = 0; i < 25; i++) {
 }
 
 export default function App() {
+  const scheme = useColorScheme() ?? 'light';
+  const search = React.useRef<SearchRef>(null);
+  React.useEffect(() => {
+    const event = Platform.select<KeyboardEventName>({
+      ios: 'keyboardWillHide',
+      default: 'keyboardDidHide',
+    });
+    const sub = Keyboard.addListener(event, () => {
+      search.current?.dismiss();
+    });
+    return () => {
+      sub.remove();
+    };
+  }, []);
   return (
-    <AutocompleteDropdownContextProvider>
-      <View style={styles.container}>
-        <Search
-          placeholder="Buscar localização"
-          suggestions={suggestionItems}
-        />
-      </View>
-    </AutocompleteDropdownContextProvider>
+    <>
+      <StatusBar
+        barStyle={scheme === 'light' ? 'dark-content' : 'light-content'}
+      />
+      <AutocompleteDropdownContextProvider>
+        <SafeAreaView style={styles.container}>
+          <ScrollView
+            nestedScrollEnabled
+            keyboardDismissMode="on-drag"
+            keyboardShouldPersistTaps="handled"
+            contentInsetAdjustmentBehavior="automatic"
+            style={styles.scrollView}
+            contentContainerStyle={styles.scrollViewContent}>
+            <Search
+              ref={search}
+              style={styles.search}
+              placeholder="Buscar localização"
+              suggestions={suggestionItems}
+            />
+          </ScrollView>
+        </SafeAreaView>
+      </AutocompleteDropdownContextProvider>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 20,
-    marginTop: 32,
-    alignItems: 'center',
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+  },
+  search: {
+    padding: 12,
+  },
+  content: {
+    marginHorizontal: 12,
   },
 });
