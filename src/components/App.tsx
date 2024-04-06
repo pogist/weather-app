@@ -1,7 +1,5 @@
-import React from 'react';
+import React, { useCallback, useRef } from 'react';
 import {
-  Keyboard,
-  KeyboardEventName,
   Platform,
   SafeAreaView,
   ScrollView,
@@ -11,6 +9,7 @@ import {
 } from 'react-native';
 import { AutocompleteDropdownContextProvider } from 'react-native-autocomplete-dropdown';
 
+import { useKeyboardEffect } from '../hooks';
 import Search, { type SearchRef } from './Search';
 
 type Item = {
@@ -28,19 +27,16 @@ for (let i = 0; i < 25; i++) {
 
 export default function App() {
   const scheme = useColorScheme() ?? 'light';
-  const search = React.useRef<SearchRef>(null);
-  React.useEffect(() => {
-    const event = Platform.select<KeyboardEventName>({
+  const search = useRef<SearchRef>(null);
+  useKeyboardEffect(
+    Platform.select({
       ios: 'keyboardWillHide',
       default: 'keyboardDidHide',
-    });
-    const sub = Keyboard.addListener(event, () => {
+    }),
+    useCallback(() => {
       search.current?.dismiss();
-    });
-    return () => {
-      sub.remove();
-    };
-  }, []);
+    }, []),
+  );
   return (
     <>
       <StatusBar
