@@ -15,6 +15,7 @@ import { AutocompleteDropdownContextProvider } from 'react-native-autocomplete-d
 import { useKeyboardEffect } from '../hooks';
 import LocationInfo from './LocationInfo';
 import Search, { type SearchRef } from './Search';
+import Table from './Table';
 import WeatherIcon from './WeatherIcon';
 
 type Item = {
@@ -63,13 +64,14 @@ export default function App() {
               suggestions={suggestionItems}
             />
             <LocationInfo
-              isCurrentLocation
               city="Fortaleza"
-              state="Ceará"
+              containerStyle={styles.locationInfo}
               country="Brasil"
-              weatherType="thunderstorm"
               description="Chuva com trovoadas"
+              isCurrentLocation
+              state="Ceará"
               temp={31}
+              weatherType="thunderstorm"
             />
             <View style={styles.forecastHeader}>
               <View style={styles.dateContainer}>
@@ -83,6 +85,25 @@ export default function App() {
                 </Text>
               </View>
             </View>
+            <Table
+              containerStyle={styles.table}
+              data={[
+                { id: '0', title: 'Atual', value: '31º C' },
+                { id: '1', title: 'Mínima', value: '28º C' },
+                { id: '2', title: 'Máxima', value: '31º C' },
+                { id: '3', title: 'Sensação térmica', value: '32º C' },
+              ]}
+              headerTitle="Temperatura"
+            />
+            <Table
+              containerStyle={styles.table}
+              data={[
+                { id: '0', title: 'Umidade relativa', value: '78%' },
+                { id: '1', title: 'Chance de precipitação', value: '0,5%' },
+                { id: '2', title: 'Volume nas últimas 3h', value: '14mm' },
+              ]}
+              headerTitle="Umidade e Precipitação"
+            />
           </ScrollView>
         </SafeAreaView>
       </AutocompleteDropdownContextProvider>
@@ -103,6 +124,10 @@ const styles = StyleSheet.create({
   },
   search: {
     padding: 12,
+  },
+  locationInfo: {
+    marginBottom: 12,
+    marginHorizontal: 12,
   },
   forecastHeader: {
     margin: 12,
@@ -134,5 +159,8 @@ const styles = StyleSheet.create({
     color: PlatformColor('label'),
     fontSize: 12,
     lineHeight: 12,
+  },
+  table: {
+    margin: 20,
   },
 });

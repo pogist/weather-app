@@ -1,11 +1,19 @@
 import React from 'react';
-import { PlatformColor, StyleSheet, Text, View } from 'react-native';
+import {
+  PlatformColor,
+  StyleProp,
+  StyleSheet,
+  Text,
+  View,
+  ViewStyle,
+} from 'react-native';
 
 import type { WeatherType } from '../types';
 import WeatherIcon from './WeatherIcon';
 
 type SummaryProps = {
   city: string;
+  containerStyle?: StyleProp<ViewStyle>;
   country: string;
   description: string;
   isCurrentLocation?: boolean;
@@ -16,6 +24,7 @@ type SummaryProps = {
 
 export default function LocationInfo({
   city,
+  containerStyle,
   country,
   description,
   isCurrentLocation,
@@ -24,7 +33,7 @@ export default function LocationInfo({
   weatherType,
 }: SummaryProps) {
   return (
-    <View style={styles.container}>
+    <View style={containerStyle}>
       {isCurrentLocation && (
         <View style={styles.currentLocation}>
           <Text style={styles.currentLocationText}>
@@ -54,10 +63,6 @@ export default function LocationInfo({
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginBottom: 12,
-    marginHorizontal: 12,
-  },
   content: {
     padding: 16,
     borderRadius: 12,
