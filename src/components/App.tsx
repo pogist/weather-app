@@ -11,6 +11,7 @@ import { AutocompleteDropdownContextProvider } from 'react-native-autocomplete-d
 
 import { useKeyboardEffect } from '../hooks';
 import Search, { type SearchRef } from './Search';
+import Summary from './Summary';
 
 type Item = {
   id: string;
@@ -56,6 +57,15 @@ export default function App() {
               style={styles.search}
               placeholder="Buscar localização"
               suggestions={suggestionItems}
+            />
+            <Summary
+              isCurrentLocation
+              city="Fortaleza"
+              state="Ceará"
+              country="Brasil"
+              weatherType="thunderstorm"
+              description="Chuva com trovoadas"
+              temp={31}
             />
           </ScrollView>
         </SafeAreaView>

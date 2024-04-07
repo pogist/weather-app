@@ -4,8 +4,7 @@ import {
   AutocompleteDropdown,
   AutocompleteDropdownRef,
 } from 'react-native-autocomplete-dropdown';
-
-import Icon from './Icon';
+import Icon from 'react-native-vector-icons/Feather';
 
 type SearchSuggestion = {
   id: string;
@@ -54,7 +53,9 @@ const Search = React.forwardRef<SearchRef, SearchProps>((props, ref) => {
           placeholder: props.placeholder,
         }}
         LeftComponent={
-          <Icon containerStyle={styles.centered} name="search" size={18} />
+          <View style={styles.centered}>
+            <Icon name="search" size={18} />
+          </View>
         }
         ClearIconComponent={<Icon name="x-circle" size={16} />}
         ChevronIconComponent={<Icon name="chevron-down" size={16} />}
