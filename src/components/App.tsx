@@ -13,7 +13,7 @@ import {
 import { AutocompleteDropdownContextProvider } from 'react-native-autocomplete-dropdown';
 
 import { useKeyboardEffect } from '../hooks';
-import LocationInfo from './LocationInfo';
+import Location from './Location';
 import Search, { type SearchRef } from './Search';
 import Table from './Table';
 import WeatherIcon from './WeatherIcon';
@@ -63,15 +63,15 @@ export default function App() {
               placeholder="Buscar localização"
               suggestions={suggestionItems}
             />
-            <LocationInfo
+            <Location
               city="Fortaleza"
-              containerStyle={styles.locationInfo}
+              containerStyle={styles.location}
               country="Brasil"
-              description="Chuva com trovoadas"
               isCurrentLocation
               state="Ceará"
-              temp={31}
-              weatherType="thunderstorm"
+              weather="thunderstorm"
+              weatherDesc="Chuva com trovoadas"
+              weatherTemp={31}
             />
             <View style={styles.forecastHeader}>
               <View style={styles.dateContainer}>
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   search: {
     padding: 12,
   },
-  locationInfo: {
+  location: {
     marginBottom: 12,
     marginHorizontal: 12,
   },
