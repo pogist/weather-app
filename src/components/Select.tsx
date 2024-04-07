@@ -9,7 +9,7 @@ import {
   ViewStyle,
 } from 'react-native';
 
-type SelectRenderItemInfo = {
+export type SelectRenderItemInfo = {
   index: number;
   item: string;
   selected: boolean;
