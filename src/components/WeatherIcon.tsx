@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-  ColorValue,
-  PlatformColor,
-  StyleProp,
-  StyleSheet,
-  Text,
-  TextStyle,
-  View,
-  ViewStyle,
-} from 'react-native';
+import { ColorValue, PlatformColor, StyleProp, TextStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import type { IconProps } from 'react-native-vector-icons/Icon';
 
@@ -55,40 +46,11 @@ const weatherIconSet: WeatherIconSet = {
 };
 
 type WeatherIconProps = {
-  containerStyle?: StyleProp<ViewStyle>;
-  description: string;
   size: number;
   style?: StyleProp<TextStyle>;
   type: WeatherType;
 };
 
-export default function WeatherIcon({
-  containerStyle,
-  description,
-  size,
-  style,
-  type,
-}: WeatherIconProps) {
-  const props = weatherIconSet[type];
-  return (
-    <View style={[styles.container, containerStyle]}>
-      <Icon {...props} style={style} size={size} />
-      <Text numberOfLines={2} style={styles.description}>
-        {description}
-      </Text>
-    </View>
-  );
+export default function WeatherIcon({ size, style, type }: WeatherIconProps) {
+  return <Icon {...weatherIconSet[type]} style={style} size={size} />;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    gap: 4,
-    alignItems: 'center',
-  },
-  description: {
-    color: PlatformColor('secondaryLabel'),
-    width: 86,
-    fontSize: 10,
-    textAlign: 'center',
-  },
-});

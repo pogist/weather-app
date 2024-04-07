@@ -14,7 +14,7 @@ type SummaryProps = {
   weatherType: WeatherType;
 };
 
-export default function Summary({
+export default function LocationInfo({
   city,
   country,
   description,
@@ -34,18 +34,18 @@ export default function Summary({
       )}
       <View style={styles.content}>
         <View style={styles.location}>
-          <Text style={styles.city}>{city}</Text>
-          <Text style={styles.cityDetails}>
+          <Text style={styles.cityTitle}>{city}</Text>
+          <Text style={styles.citySubtitle}>
             {state}, {country}
           </Text>
         </View>
         <View style={styles.weather}>
-          <WeatherIcon
-            containerStyle={styles.weatherIcon}
-            description={description}
-            size={32}
-            type={weatherType}
-          />
+          <View style={styles.weatherCondition}>
+            <WeatherIcon size={28} type={weatherType} />
+            <Text numberOfLines={2} style={styles.description}>
+              {description}
+            </Text>
+          </View>
           <Text style={styles.temp}>{temp}º</Text>
         </View>
       </View>
@@ -74,23 +74,26 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   location: {
-    gap: 4,
+    gap: 2,
     flex: 1,
   },
-  weatherIcon: {
-    alignSelf: 'stretch',
-  },
   weather: {
+    gap: 4,
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-end',
   },
-  city: {
+  weatherCondition: {
+    gap: 4,
+    alignSelf: 'stretch',
+    alignItems: 'center',
+  },
+  cityTitle: {
     color: PlatformColor('label'),
     fontSize: 28,
     fontWeight: '500',
   },
-  cityDetails: {
+  citySubtitle: {
     color: PlatformColor('secondaryLabel'),
     fontSize: 12,
   },
@@ -99,5 +102,12 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: '500',
     fontVariant: ['tabular-nums'],
+  },
+  description: {
+    color: PlatformColor('secondaryLabel'),
+    width: 82,
+    fontSize: 11,
+    lineHeight: 11,
+    textAlign: 'center',
   },
 });

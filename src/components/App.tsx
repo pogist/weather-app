@@ -1,17 +1,21 @@
 import React, { useCallback, useRef } from 'react';
 import {
   Platform,
+  PlatformColor,
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
+  Text,
+  View,
   useColorScheme,
 } from 'react-native';
 import { AutocompleteDropdownContextProvider } from 'react-native-autocomplete-dropdown';
 
 import { useKeyboardEffect } from '../hooks';
+import LocationInfo from './LocationInfo';
 import Search, { type SearchRef } from './Search';
-import Summary from './Summary';
+import WeatherIcon from './WeatherIcon';
 
 type Item = {
   id: string;
@@ -58,7 +62,7 @@ export default function App() {
               placeholder="Buscar localização"
               suggestions={suggestionItems}
             />
-            <Summary
+            <LocationInfo
               isCurrentLocation
               city="Fortaleza"
               state="Ceará"
@@ -67,6 +71,18 @@ export default function App() {
               description="Chuva com trovoadas"
               temp={31}
             />
+            <View style={styles.forecastHeader}>
+              <View style={styles.dateContainer}>
+                <Text style={styles.dateTitle}>Hoje</Text>
+                <Text style={styles.dateSubtitle}>04 de Abril (9h às 12h)</Text>
+              </View>
+              <View style={styles.weatherContainer}>
+                <WeatherIcon type="thunderstorm" size={28} />
+                <Text numberOfLines={2} style={styles.weatherDescription}>
+                  Chuva com trovoadas
+                </Text>
+              </View>
+            </View>
           </ScrollView>
         </SafeAreaView>
       </AutocompleteDropdownContextProvider>
@@ -77,6 +93,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: PlatformColor('systemBackground'),
   },
   scrollView: {
     flex: 1,
@@ -87,7 +104,35 @@ const styles = StyleSheet.create({
   search: {
     padding: 12,
   },
-  content: {
-    marginHorizontal: 12,
+  forecastHeader: {
+    margin: 12,
+    paddingHorizontal: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  dateContainer: {
+    gap: 8,
+    alignItems: 'center',
+  },
+  dateTitle: {
+    color: PlatformColor('label'),
+    fontSize: 28,
+    lineHeight: 28,
+    fontWeight: '500',
+  },
+  dateSubtitle: {
+    color: PlatformColor('secondaryLabel'),
+    fontSize: 12,
+    lineHeight: 12,
+  },
+  weatherContainer: {
+    gap: 8,
+    alignItems: 'center',
+  },
+  weatherDescription: {
+    color: PlatformColor('label'),
+    fontSize: 12,
+    lineHeight: 12,
   },
 });
