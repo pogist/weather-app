@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import {
   FlatList,
   ListRenderItemInfo,
@@ -18,27 +18,23 @@ type SelectProps = {
   containerStyle?: StyleProp<ViewStyle>;
   contentContainerStyle?: StyleProp<ViewStyle>;
   data: string[];
-  initial?: string;
-  onSelect: (item: string) => void;
+  onSelectItem: (item: string) => void;
   renderItem: (info: SelectRenderItemInfo) => React.ReactElement;
+  selectedItem: string;
 };
 
 export default function Select({
   containerStyle,
   contentContainerStyle,
   data,
-  initial,
-  onSelect,
+  onSelectItem,
   renderItem: renderSelectItem,
+  selectedItem,
 }: SelectProps) {
-  const [selectedItem, setSelectedItem] = useState(initial ?? data[0]);
   const renderItem = useCallback(
     ({ index, item }: ListRenderItemInfo<string>) => {
       const onPress = () => {
-        if (item !== selectedItem) {
-          setSelectedItem(item);
-          onSelect(item);
-        }
+        onSelectItem(item);
       };
       const pressedStyle = ({ pressed }: { pressed: boolean }) => {
         if (!pressed) {
@@ -53,7 +49,7 @@ export default function Select({
         </Pressable>
       );
     },
-    [selectedItem, onSelect, renderSelectItem],
+    [selectedItem, onSelectItem, renderSelectItem],
   );
   const keyExtractor = useCallback((item: string) => item, []);
   return (
