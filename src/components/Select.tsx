@@ -4,7 +4,6 @@ import {
   ListRenderItemInfo,
   Pressable,
   StyleProp,
-  StyleSheet,
   View,
   ViewStyle,
 } from 'react-native';
@@ -17,6 +16,7 @@ export type SelectRenderItemInfo = {
 
 type SelectProps = {
   containerStyle?: StyleProp<ViewStyle>;
+  contentContainerStyle?: StyleProp<ViewStyle>;
   data: string[];
   initial?: string;
   onSelect: (item: string) => void;
@@ -25,6 +25,7 @@ type SelectProps = {
 
 export default function Select({
   containerStyle,
+  contentContainerStyle,
   data,
   initial,
   onSelect,
@@ -59,19 +60,13 @@ export default function Select({
     <View style={containerStyle ?? {}}>
       <FlatList
         alwaysBounceHorizontal={false}
-        contentContainerStyle={styles.listContent}
+        contentContainerStyle={contentContainerStyle ?? {}}
         data={data}
         horizontal
         keyExtractor={keyExtractor}
         renderItem={renderItem}
+        showsHorizontalScrollIndicator={false}
       />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  listContent: {
-    flex: 1,
-    justifyContent: 'space-around',
-  },
-});
