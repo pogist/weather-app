@@ -1,12 +1,6 @@
 import React from 'react';
-import {
-  PlatformColor,
-  StyleProp,
-  StyleSheet,
-  Text,
-  View,
-  ViewStyle,
-} from 'react-native';
+import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { createStyles, useStyles } from '../styling';
 
 type TableItem = {
   id: string;
@@ -25,6 +19,7 @@ export default function Table({
   data,
   headerTitle,
 }: TableProps) {
+  const styles = useStyles(themedStyles);
   return (
     <View style={containerStyle}>
       <View style={styles.header}>
@@ -45,44 +40,46 @@ export default function Table({
   );
 }
 
-const styles = StyleSheet.create({
-  header: {
-    padding: 10,
-    paddingLeft: 18,
-  },
-  headerTitle: {
-    color: PlatformColor('label'),
-    fontSize: 16,
-    lineHeight: 16,
-    fontWeight: '700',
-  },
-  content: {
-    borderRadius: 12,
-    paddingVertical: 2,
-    backgroundColor: PlatformColor('secondarySystemBackground'),
-  },
-  item: {
-    padding: 14,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  itemTitle: {
-    marginLeft: 8,
-    color: PlatformColor('label'),
-    fontSize: 16,
-    lineHeight: 16,
-  },
-  itemValue: {
-    color: PlatformColor('label'),
-    fontSize: 16,
-    lineHeight: 16,
-    fontWeight: '500',
-    fontVariant: ['tabular-nums'],
-  },
-  separator: {
-    marginLeft: 14,
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: PlatformColor('separator'),
-  },
-});
+const themedStyles = createStyles((theme) =>
+  StyleSheet.create({
+    header: {
+      padding: 10,
+      paddingLeft: 18,
+    },
+    headerTitle: {
+      color: theme.color.label,
+      fontSize: 16,
+      lineHeight: 16,
+      fontWeight: '700',
+    },
+    content: {
+      backgroundColor: theme.color.secondaryBackground,
+      borderRadius: 12,
+      paddingVertical: 2,
+    },
+    item: {
+      padding: 14,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    itemTitle: {
+      color: theme.color.label,
+      marginLeft: 8,
+      fontSize: 16,
+      lineHeight: 16,
+    },
+    itemValue: {
+      color: theme.color.label,
+      fontSize: 16,
+      lineHeight: 16,
+      fontWeight: '500',
+      fontVariant: ['tabular-nums'],
+    },
+    separator: {
+      backgroundColor: theme.color.separator,
+      marginLeft: 14,
+      height: StyleSheet.hairlineWidth,
+    },
+  }),
+);
