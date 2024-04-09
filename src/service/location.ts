@@ -3,9 +3,32 @@ import { NativeModules, PermissionsAndroid, Platform } from 'react-native';
 const Location = NativeModules.Location;
 const permission = PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION;
 
+async function getCurrent(): Promise<{ lat: number; long: number }> {
+  if (Platform.OS === 'android') {
+    return Location.getCurrent();
+  }
+  if (Platform.OS === 'ios') {
+    return new Promise((resolve, reject) => {
+      Location.getCurrent(
+        (error: Error | null, location: { lat: number; long: number }) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(location);
+          }
+        },
+      );
+    });
+  }
+  return { lat: 0, long: 0 };
+}
+
 async function isEnabled(): Promise<boolean> {
   if (Platform.OS === 'android') {
     return PermissionsAndroid.check(permission);
+  }
+  if (Platform.OS === 'ios') {
+    return Location.isEnabled();
   }
   return false;
 }
@@ -15,11 +38,18 @@ async function request(): Promise<boolean> {
     const granted = await PermissionsAndroid.request(permission);
     return granted === PermissionsAndroid.RESULTS.GRANTED;
   }
+  if (Platform.OS === 'ios') {
+    return new Promise((resolve, reject) => {
+      Location.request((error: Error | null, granted: boolean) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(granted);
+        }
+      });
+    });
+  }
   return false;
-}
-
-async function getCurrent(): Promise<{ lat: number; long: number }> {
-  return Location.getCurrent();
 }
 
 export default { getCurrent, isEnabled, request };

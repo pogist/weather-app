@@ -14,6 +14,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		4C20EFF22BBDDA77002FF0FD /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4C20EFF12BBDDA77002FF0FD /* Feather.ttf */; };
 		4C6B6FA42BC51700000F3DCC /* Geocoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C6B6FA32BC51700000F3DCC /* Geocoding.m */; };
+		4CD3446D2BC5CB1000DE35F7 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CD3446C2BC5CB1000DE35F7 /* Location.m */; };
 		7699B88040F8A987B510C191 /* libPods-LinxChallenge-LinxChallengeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-LinxChallenge-LinxChallengeTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -43,6 +44,8 @@
 		4C20EFF12BBDDA77002FF0FD /* Feather.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		4C6B6FA32BC51700000F3DCC /* Geocoding.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = Geocoding.m; path = LinxChallenge/Geocoding.m; sourceTree = "<group>"; };
 		4C6B6FA52BC51730000F3DCC /* Geocoding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Geocoding.h; path = LinxChallenge/Geocoding.h; sourceTree = "<group>"; };
+		4CD3446B2BC5CB0200DE35F7 /* Location.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Location.h; path = LinxChallenge/Location.h; sourceTree = "<group>"; };
+		4CD3446C2BC5CB1000DE35F7 /* Location.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = Location.m; path = LinxChallenge/Location.m; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-LinxChallenge.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LinxChallenge.release.xcconfig"; path = "Target Support Files/Pods-LinxChallenge/Pods-LinxChallenge.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-LinxChallenge-LinxChallengeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LinxChallenge-LinxChallengeTests.debug.xcconfig"; path = "Target Support Files/Pods-LinxChallenge-LinxChallengeTests/Pods-LinxChallenge-LinxChallengeTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-LinxChallenge.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LinxChallenge.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -100,6 +103,8 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 				4C6B6FA32BC51700000F3DCC /* Geocoding.m */,
 				4C6B6FA52BC51730000F3DCC /* Geocoding.h */,
+				4CD3446B2BC5CB0200DE35F7 /* Location.h */,
+				4CD3446C2BC5CB1000DE35F7 /* Location.m */,
 			);
 			name = LinxChallenge;
 			sourceTree = "<group>";
@@ -411,6 +416,7 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				4C6B6FA42BC51700000F3DCC /* Geocoding.m in Sources */,
+				4CD3446D2BC5CB1000DE35F7 /* Location.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -598,10 +604,7 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -669,10 +672,7 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
