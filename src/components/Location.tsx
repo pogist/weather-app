@@ -24,11 +24,23 @@ export default function Location({
       )}
       <View style={styles.cityContainer}>
         <Text style={styles.city}>{city}</Text>
-        <Text style={styles.date}>{date}</Text>
+        <Text style={styles.date}>{format(date)}</Text>
       </View>
     </View>
   );
 }
+
+function format(dateString: string): string {
+  const formatted = formatter.format(new Date(dateString));
+  return formatted.charAt(0).toUpperCase() + formatted.slice(1);
+}
+
+const formatter = new Intl.DateTimeFormat('pt-BR', {
+  weekday: 'long',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
 
 const themedStyles = createStyles((theme) =>
   StyleSheet.create({
