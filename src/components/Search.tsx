@@ -1,87 +1,118 @@
-import React from 'react';
+import React, { useCallback, useContext } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import {
   AutocompleteDropdown,
-  AutocompleteDropdownRef,
+  type TAutocompleteDropdownItem,
 } from 'react-native-autocomplete-dropdown';
 import Icon from 'react-native-vector-icons/Feather';
 
+import { ThemeContext, createStyles, useStyles } from '../styling';
+
 type SearchSuggestion = {
   id: string;
-  title: string;
+  title: string | null;
 };
 
 type SearchProps = {
-  style?: StyleProp<ViewStyle>;
   debounce?: number;
   loading?: boolean;
-  placeholder?: string;
-  suggestions?: SearchSuggestion[];
   onChangeText?: (text: string) => void;
   onSelectSuggestion?: (suggestion: SearchSuggestion) => void;
+  placeholder?: string;
+  style?: StyleProp<ViewStyle>;
+  suggestions?: SearchSuggestion[];
 };
 
-export type SearchRef = {
-  dismiss: () => void;
-};
+export default function Search({
+  debounce,
+  loading,
+  onChangeText,
+  onSelectSuggestion,
+  placeholder,
+  style,
+  suggestions,
+}: SearchProps) {
+  const theme = useContext(ThemeContext);
+  const styles = useStyles(themedStyles);
 
-const Search = React.forwardRef<SearchRef, SearchProps>((props, ref) => {
-  const dropdown = React.useRef<AutocompleteDropdownRef | null>(null);
-  React.useImperativeHandle(ref, () => {
-    return {
-      dismiss() {
-        dropdown.current?.close();
-      },
-    };
-  });
+  const onSelectItem = useCallback(
+    (item: TAutocompleteDropdownItem) => {
+      onSelectSuggestion?.(item);
+    },
+    [onSelectSuggestion],
+  );
+
   return (
-    <View style={[styles.container, props.style]}>
+    <View style={[styles.container, style ?? {}]}>
       <AutocompleteDropdown
-        controller={(controller) => {
-          dropdown.current = controller;
-        }}
         inputHeight={36}
         clearOnFocus={false}
-        dataSet={props.suggestions}
-        debounce={props.debounce}
-        loading={props.loading}
+        dataSet={suggestions}
+        debounce={debounce}
+        loading={loading}
         useFilter={false}
+        onChangeText={onChangeText}
+        onSelectItem={onSelectItem}
         inputContainerStyle={styles.inputContainer}
         rightButtonsContainerStyle={styles.rightButtonsContainer}
+        suggestionsListContainerStyle={styles.suggestion}
+        suggestionsListTextStyle={styles.suggestionTitle}
+        ItemSeparatorComponent={<View style={styles.separator} />}
         textInputProps={{
           style: styles.input,
-          placeholder: props.placeholder,
+          placeholder: placeholder,
+          placeholderTextColor: theme.color.placeholder,
         }}
         LeftComponent={
           <View style={styles.centered}>
-            <Icon name="search" size={18} />
+            <Icon style={styles.icon} name="search" size={18} />
           </View>
         }
-        ClearIconComponent={<Icon name="x-circle" size={16} />}
-        ChevronIconComponent={<Icon name="chevron-down" size={16} />}
+        ClearIconComponent={
+          <Icon style={styles.icon} name="x-circle" size={16} />
+        }
+        ChevronIconComponent={
+          <Icon style={styles.icon} name="chevron-down" size={16} />
+        }
       />
     </View>
   );
-});
+}
 
-export default Search;
-
-const styles = StyleSheet.create({
-  centered: {
-    justifyContent: 'center',
-  },
-  container: {
-    alignSelf: 'stretch',
-  },
-  input: {
-    paddingHorizontal: 0,
-  },
-  inputContainer: {
-    gap: 6,
-    borderRadius: 10,
-    paddingHorizontal: 8,
-  },
-  rightButtonsContainer: {
-    right: 0,
-  },
-});
+const themedStyles = createStyles((theme) =>
+  StyleSheet.create({
+    icon: {
+      color: theme.color.gray1,
+    },
+    centered: {
+      justifyContent: 'center',
+    },
+    container: {
+      alignSelf: 'stretch',
+    },
+    input: {
+      color: theme.color.label,
+      paddingHorizontal: 0,
+    },
+    inputContainer: {
+      backgroundColor: theme.color.secondaryBackground,
+      gap: 6,
+      borderRadius: 10,
+      paddingHorizontal: 8,
+    },
+    rightButtonsContainer: {
+      right: 0,
+    },
+    suggestion: {
+      backgroundColor: theme.color.secondaryBackground,
+      borderRadius: 12,
+    },
+    suggestionTitle: {
+      color: theme.color.label,
+    },
+    separator: {
+      backgroundColor: theme.color.separator,
+      height: StyleSheet.hairlineWidth,
+    },
+  }),
+);
