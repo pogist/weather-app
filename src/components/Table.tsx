@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
-import { createStyles, useStyles } from '../styling';
+import { createStyles, spacing, useStyles } from '../styling';
 
 type TableItem = {
   id: string;
@@ -43,42 +43,42 @@ export default function Table({
 const themedStyles = createStyles((theme) =>
   StyleSheet.create({
     header: {
-      padding: 10,
-      paddingLeft: 18,
+      padding: spacing(2),
+      paddingLeft: spacing(5),
     },
     headerTitle: {
       color: theme.color.label,
-      fontSize: 16,
-      lineHeight: 16,
+      fontSize: spacing(4),
+      lineHeight: spacing(4),
       fontWeight: '700',
     },
     content: {
       backgroundColor: theme.color.secondaryBackground,
-      borderRadius: 12,
-      paddingVertical: 2,
+      borderRadius: spacing(3),
+      paddingVertical: spacing(1),
     },
     item: {
-      padding: 14,
+      padding: spacing(3),
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
     },
     itemTitle: {
       color: theme.color.label,
-      marginLeft: 8,
-      fontSize: 16,
-      lineHeight: 16,
+      marginLeft: spacing(2),
+      fontSize: spacing(4),
+      lineHeight: spacing(4),
     },
     itemValue: {
       color: theme.color.label,
-      fontSize: 16,
-      lineHeight: 16,
+      fontSize: spacing(4),
+      lineHeight: spacing(4),
       fontWeight: '500',
       fontVariant: ['tabular-nums'],
     },
     separator: {
       backgroundColor: theme.color.separator,
-      marginLeft: 14,
+      marginLeft: spacing(4),
       height: StyleSheet.hairlineWidth,
     },
   }),
