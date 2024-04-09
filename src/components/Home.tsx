@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { useForecast } from '../hooks';
 import { createStyles, spacing, useStyles } from '../styling';
 import { WeatherType } from '../types';
+import Loading from './Loading';
 import Location from './Location';
 import Search from './Search';
 import SelectDate from './SelectDate';
@@ -107,38 +109,30 @@ const windTable = [
 export default function Home() {
   const styles = useStyles(themedStyles);
   const [selectedDate, setSelectedDate] = useState(dates[0]);
+
+  const [forecast, loading] = useForecast();
+
   const onSelectDate = (date: string) => {
     if (date !== selectedDate) {
       setSelectedDate(date);
     }
   };
-  return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView
-        nestedScrollEnabled
-        keyboardDismissMode="on-drag"
-        keyboardShouldPersistTaps="handled"
-        contentInsetAdjustmentBehavior="automatic"
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollViewContent}>
-        <Search
-          style={styles.search}
-          placeholder="Buscar cidade"
-          suggestions={suggestionItems}
-        />
+
+  const render = () => {
+    return (
+      <>
         <Location
-          city="fortaleza"
+          city={forecast!.city}
           containerStyle={styles.location}
-          currentLocation
-          date={selectedDate}
+          date={forecast!.timestamp}
         />
         <Summary
           containerStyle={styles.summary}
-          sunriseTime={1712565251}
-          sunsetTime={1712608621}
-          temp={31}
-          weather="clear"
-          weatherDesc="Céu limpo"
+          sunriseTime={forecast!.sunrise}
+          sunsetTime={forecast!.sunset}
+          temp={forecast!.periods[0].temp.value}
+          weather={forecast!.periods[0].weather.type}
+          weatherDesc={forecast!.periods[0].weather.description}
         />
         <SelectDate
           containerStyle={styles.selectDate}
@@ -172,13 +166,70 @@ export default function Home() {
           data={windTable}
           headerTitle="Vento"
         />
+      </>
+    );
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <ScrollView
+        nestedScrollEnabled
+        keyboardDismissMode="on-drag"
+        keyboardShouldPersistTaps="handled"
+        contentInsetAdjustmentBehavior="automatic"
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollViewContent}>
+        <Search
+          loading={loading}
+          style={styles.search}
+          placeholder="Buscar cidade"
+          suggestions={suggestionItems}
+        />
+        {loading ? (
+          <Loading
+            containerStyle={styles.loading}
+            message="Carregando cidade"
+            size="large"
+          />
+        ) : forecast ? (
+          render()
+        ) : (
+          <EmptyState />
+        )}
       </ScrollView>
     </SafeAreaView>
   );
 }
 
+function EmptyState() {
+  const styles = useStyles(themedStyles);
+  return (
+    <View style={styles.emptyState}>
+      <Text numberOfLines={2} style={styles.emptyStateText}>
+        Digite o nome de alguma cidade na barra acima para começar
+      </Text>
+    </View>
+  );
+}
+
 const themedStyles = createStyles((theme) =>
   StyleSheet.create({
+    emptyState: {
+      backgroundColor: theme.color.background,
+      paddingHorizontal: spacing(8),
+      flex: 0.3,
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+    },
+    emptyStateText: {
+      color: theme.color.secondaryLabel,
+      fontSize: spacing(5),
+      textAlign: 'center',
+    },
+    loading: {
+      flex: 0.3,
+      justifyContent: 'flex-end',
+    },
     container: {
       backgroundColor: theme.color.background,
       flex: 1,
