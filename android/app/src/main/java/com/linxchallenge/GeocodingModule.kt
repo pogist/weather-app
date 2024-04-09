@@ -7,7 +7,9 @@ import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 
-class GeocodingModule(private val reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
+class GeocodingModule(
+    private val reactContext: ReactApplicationContext
+) : ReactContextBaseJavaModule(reactContext) {
     private lateinit var geocoder: Geocoder
 
     override fun initialize() {

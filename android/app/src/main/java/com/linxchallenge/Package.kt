@@ -13,6 +13,9 @@ class Package : ReactPackage {
     }
 
     override fun createNativeModules(reactContext: ReactApplicationContext): MutableList<NativeModule> {
-        return mutableListOf(GeocodingModule(reactContext))
+        return mutableListOf(
+            GeocodingModule(reactContext),
+            LocationModule(reactContext)
+        )
     }
 }
