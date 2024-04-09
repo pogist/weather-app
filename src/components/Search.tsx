@@ -6,7 +6,7 @@ import {
 } from 'react-native-autocomplete-dropdown';
 import Icon from 'react-native-vector-icons/Feather';
 
-import { ThemeContext, createStyles, useStyles } from '../styling';
+import { ThemeContext, createStyles, spacing, useStyles } from '../styling';
 
 type SearchSuggestion = {
   id: string;
@@ -45,7 +45,7 @@ export default function Search({
   return (
     <View style={[styles.container, style ?? {}]}>
       <AutocompleteDropdown
-        inputHeight={36}
+        inputHeight={spacing(10)}
         clearOnFocus={false}
         dataSet={suggestions}
         debounce={debounce}
@@ -96,16 +96,16 @@ const themedStyles = createStyles((theme) =>
     },
     inputContainer: {
       backgroundColor: theme.color.secondaryBackground,
-      gap: 6,
-      borderRadius: 10,
-      paddingHorizontal: 8,
+      gap: spacing(2),
+      borderRadius: spacing(3),
+      paddingHorizontal: spacing(2),
     },
     rightButtonsContainer: {
       right: 0,
     },
     suggestion: {
       backgroundColor: theme.color.secondaryBackground,
-      borderRadius: 12,
+      borderRadius: spacing(3),
     },
     suggestionTitle: {
       color: theme.color.label,
