@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 
 import { createStyles, spacing, useStyles } from '../styling';
+import { capitalize } from '../util';
 
 type LocationProps = {
   city: string;
@@ -23,7 +24,7 @@ export default function Location({
         <Text style={styles.currentLocationLabel}>Localização atual</Text>
       )}
       <View style={styles.cityContainer}>
-        <Text style={styles.city}>{city}</Text>
+        <Text style={styles.city}>{capitalize(city)}</Text>
         <Text style={styles.date}>{format(date)}</Text>
       </View>
     </View>
@@ -31,8 +32,7 @@ export default function Location({
 }
 
 function format(dateString: string): string {
-  const formatted = formatter.format(new Date(dateString));
-  return formatted.charAt(0).toUpperCase() + formatted.slice(1);
+  return capitalize(formatter.format(new Date(dateString)));
 }
 
 const formatter = new Intl.DateTimeFormat('pt-BR', {

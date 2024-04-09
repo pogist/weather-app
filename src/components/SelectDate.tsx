@@ -9,6 +9,7 @@ import {
 
 import { useWeekDay } from '../hooks';
 import { createStyles, spacing, useStyles } from '../styling';
+import { capitalize } from '../util';
 import Select, { type SelectRenderItemInfo } from './Select';
 
 type SelectDateProps = {
@@ -58,10 +59,6 @@ function SelectDateItem({ date: dateString, style }: SelectDateItemProps) {
   return (
     <Text style={style}>{isToday(date) ? 'Hoje' : capitalize(weekDay)}</Text>
   );
-}
-
-function capitalize(value: string) {
-  return value.charAt(0).toUpperCase() + value.slice(1);
 }
 
 function isToday(date: Date) {
