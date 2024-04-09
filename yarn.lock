@@ -2919,6 +2919,7 @@ __metadata:
     react: "npm:18.2.0"
     react-native: "npm:0.73.6"
     react-native-autocomplete-dropdown: "npm:^3.1.5"
+    react-native-config: "npm:^1.5.1"
     react-native-svg: "npm:^15.1.0"
     react-native-vector-icons: "npm:^10.0.3"
     react-test-renderer: "npm:18.2.0"
@@ -8005,6 +8006,18 @@ __metadata:
     react-native: ">=0.60.0"
     react-native-svg: ">=13.0.0"
   checksum: 10c0/d90181b49b1449650645539cb7cda3bf26503226c2599b9c2fc1ff6347924f3a49236ad6f258d1ae740c4eb0463272b04c69bc6f4e0d0aa4e97c4feb1031a3bd
+  languageName: node
+  linkType: hard
+
+"react-native-config@npm:^1.5.1":
+  version: 1.5.1
+  resolution: "react-native-config@npm:1.5.1"
+  peerDependencies:
+    react-native-windows: ">=0.61"
+  peerDependenciesMeta:
+    react-native-windows:
+      optional: true
+  checksum: 10c0/bde915ccc2c43df5e5a3f1df1c68495b598dc788cd0227d3b7a847b37fd6bbcf094a5cf9932816f7599132fa9e201c1d4db134f99e72565d20c30f69777d07ed
   languageName: node
   linkType: hard
 
