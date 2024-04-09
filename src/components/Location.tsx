@@ -1,118 +1,60 @@
 import React from 'react';
-import {
-  PlatformColor,
-  StyleProp,
-  StyleSheet,
-  Text,
-  View,
-  ViewStyle,
-} from 'react-native';
+import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 
-import type { WeatherType } from '../types';
-import WeatherIcon from './WeatherIcon';
+import { createStyles, spacing, useStyles } from '../styling';
 
 type LocationProps = {
   city: string;
   containerStyle?: StyleProp<ViewStyle>;
-  country: string;
-  isCurrentLocation?: boolean;
-  state: string;
-  weather: WeatherType;
-  weatherDesc: string;
-  weatherTemp: number;
+  currentLocation?: boolean;
+  date: string;
 };
 
 export default function Location({
   city,
   containerStyle,
-  country,
-  isCurrentLocation,
-  state,
-  weather,
-  weatherDesc,
-  weatherTemp,
+  currentLocation,
+  date,
 }: LocationProps) {
+  const styles = useStyles(themedStyles);
   return (
-    <View style={containerStyle}>
-      {isCurrentLocation && (
-        <View style={styles.currentLocation}>
-          <Text style={styles.currentLocationText}>
-            {isCurrentLocation ? 'Localização atual' : null}
-          </Text>
-        </View>
+    <View style={[styles.container, containerStyle ?? {}]}>
+      {currentLocation && (
+        <Text style={styles.currentLocationLabel}>Localização atual</Text>
       )}
-      <View style={styles.content}>
-        <View style={styles.locationInfo}>
-          <Text style={styles.cityTitle}>{city}</Text>
-          <Text style={styles.citySubtitle}>
-            {state}, {country}
-          </Text>
-        </View>
-        <View style={styles.weatherInfo}>
-          <View style={styles.weather}>
-            <WeatherIcon size={28} type={weather} />
-            <Text numberOfLines={2} style={styles.weatherDesc}>
-              {weatherDesc}
-            </Text>
-          </View>
-          <Text style={styles.weatherTemp}>{weatherTemp}º</Text>
-        </View>
+      <View style={styles.cityContainer}>
+        <Text style={styles.city}>{city}</Text>
+        <Text style={styles.date}>{date}</Text>
       </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  content: {
-    padding: 16,
-    borderRadius: 12,
-    flexDirection: 'row',
-    backgroundColor: PlatformColor('secondarySystemBackground'),
-  },
-  currentLocation: {
-    marginLeft: 16,
-    marginBottom: 4,
-  },
-  currentLocationText: {
-    color: PlatformColor('systemOrange'),
-    fontSize: 12,
-    fontWeight: '500',
-  },
-  locationInfo: {
-    gap: 2,
-    flex: 1,
-  },
-  weatherInfo: {
-    gap: 4,
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-  },
-  weather: {
-    gap: 4,
-    alignSelf: 'stretch',
-    alignItems: 'center',
-  },
-  cityTitle: {
-    color: PlatformColor('label'),
-    fontSize: 28,
-    fontWeight: '500',
-  },
-  citySubtitle: {
-    color: PlatformColor('secondaryLabel'),
-    fontSize: 12,
-  },
-  weatherTemp: {
-    color: PlatformColor('label'),
-    fontSize: 32,
-    fontWeight: '500',
-    fontVariant: ['tabular-nums'],
-  },
-  weatherDesc: {
-    color: PlatformColor('secondaryLabel'),
-    width: 82,
-    fontSize: 11,
-    lineHeight: 11,
-    textAlign: 'center',
-  },
-});
+const themedStyles = createStyles((theme) =>
+  StyleSheet.create({
+    container: {
+      gap: spacing(3),
+      alignItems: 'center',
+    },
+    currentLocationLabel: {
+      color: theme.color.orange,
+      fontSize: spacing(3),
+      lineHeight: spacing(3),
+      fontWeight: '500',
+    },
+    date: {
+      color: theme.color.secondaryLabel,
+      fontSize: spacing(3),
+      lineHeight: spacing(3),
+    },
+    city: {
+      color: theme.color.label,
+      fontSize: spacing(11),
+      lineHeight: spacing(11),
+      fontWeight: '300',
+    },
+    cityContainer: {
+      alignItems: 'center',
+    },
+  }),
+);
