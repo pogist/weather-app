@@ -6,3 +6,40 @@ export type WeatherType =
   | 'atmosphere'
   | 'clear'
   | 'clouds';
+
+export type Forecast = {
+  periods: ForecastPeriod[];
+  sunrise: string;
+  sunset: string;
+  timestamp: string;
+};
+
+export type ForecastPeriod = {
+  data: {
+    atmosphere: {
+      humidity: number;
+      pressure: number;
+      visibility: number;
+    };
+    rain: {
+      precipitation?: number;
+      volume?: number;
+    };
+    temp: {
+      feelsLike: number;
+      max: number;
+      min: number;
+      value: number;
+    };
+    weather: {
+      description: string;
+      type: WeatherType;
+    };
+    wind: {
+      direction: number;
+      gust: number;
+      speed: number;
+    };
+  };
+  timestamp: string;
+};
