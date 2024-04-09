@@ -8,8 +8,8 @@ import WeatherIcon from './WeatherIcon';
 
 type SummaryProps = {
   containerStyle?: StyleProp<ViewStyle>;
-  sunriseTime: number;
-  sunsetTime: number;
+  sunriseTime: string;
+  sunsetTime: string;
   temp: number;
   weather: WeatherType;
   weatherDesc: string;
@@ -28,17 +28,21 @@ export default function Summary({
     <View style={[styles.container, containerStyle ?? {}]}>
       <View style={styles.weather}>
         <WeatherIcon type={weather} size={spacing(16)} />
-        <Text style={styles.temp}>{temp}º</Text>
+        <Text style={styles.temp}>{Math.round(temp)}º</Text>
       </View>
       <Text style={styles.weatherDesc}>{weatherDesc}</Text>
       <View style={styles.solarActivities}>
         <View style={styles.solarActivity}>
           <Icon name="sunrise" style={styles.sunriseIcon} />
-          <Text style={styles.solarActivityTime}>{format(sunriseTime)}h</Text>
+          <Text style={styles.solarActivityTime}>
+            {formatter.format(new Date(sunriseTime))}h
+          </Text>
         </View>
         <View style={styles.solarActivity}>
           <Icon name="sunset" style={styles.sunsetIcon} />
-          <Text style={styles.solarActivityTime}>{format(sunsetTime)}h</Text>
+          <Text style={styles.solarActivityTime}>
+            {formatter.format(new Date(sunsetTime))}h
+          </Text>
         </View>
       </View>
     </View>
@@ -49,11 +53,6 @@ const formatter = new Intl.DateTimeFormat('pt-BR', {
   hour: 'numeric',
   minute: 'numeric',
 });
-
-function format(time: number): string {
-  const date = new Date(time * 1000);
-  return formatter.format(date);
-}
 
 const themedStyles = createStyles((theme) =>
   StyleSheet.create({
