@@ -7,6 +7,7 @@ import type { ForecastRequest, ForecastResponse } from './types';
 async function get(request: ForecastRequest): Promise<Forecast> {
   const url = new URL(Config.FORECAST_API_URL);
   url.searchParams.append('lang', 'pt_br');
+  url.searchParams.append('units', 'metric');
   url.searchParams.append('lat', request.lat.toString());
   url.searchParams.append('lon', request.long.toString());
   url.searchParams.append('appid', Config.OPEN_WEATHER_MAP_API_KEY);

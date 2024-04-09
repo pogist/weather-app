@@ -8,6 +8,7 @@ export type WeatherType =
   | 'clouds';
 
 export type Forecast = {
+  city: string;
   periods: ForecastPeriod[];
   sunrise: string;
   sunset: string;
@@ -15,31 +16,29 @@ export type Forecast = {
 };
 
 export type ForecastPeriod = {
-  data: {
-    atmosphere: {
-      humidity: number;
-      pressure: number;
-      visibility: number;
-    };
-    rain: {
-      precipitation?: number;
-      volume?: number;
-    };
-    temp: {
-      feelsLike: number;
-      max: number;
-      min: number;
-      value: number;
-    };
-    weather: {
-      description: string;
-      type: WeatherType;
-    };
-    wind: {
-      direction: number;
-      gust: number;
-      speed: number;
-    };
+  atmosphere: {
+    humidity: number;
+    pressure: number;
+    visibility: number;
+  };
+  rain: {
+    precipitation?: number;
+    volume?: number;
+  };
+  temp: {
+    feelsLike: number;
+    max: number;
+    min: number;
+    value: number;
+  };
+  weather: {
+    description: string;
+    type: WeatherType;
+  };
+  wind: {
+    direction: number;
+    gust: number;
+    speed: number;
   };
   timestamp: string;
 };

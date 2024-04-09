@@ -5,6 +5,7 @@ export type ForecastRequest = {
 
 export type ForecastResponse = {
   city: {
+    name: string;
     sunrise: number;
     sunset: number;
   };
