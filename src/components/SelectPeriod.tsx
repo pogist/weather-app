@@ -9,20 +9,14 @@ import {
 } from 'react-native';
 
 import { createStyles, spacing, useStyles } from '../styling';
-import { WeatherType } from '../types';
+import { ForecastPeriod } from '../types';
 import Select, { type SelectRenderItemInfo } from './Select';
 import WeatherIcon from './WeatherIcon';
 
-type Period = {
-  temp: number;
-  time: string;
-  weather: WeatherType;
-};
-
 type SelectPeriodProps = {
   containerStyle?: StyleProp<ViewStyle>;
-  data: Period[];
-  onSelect: (period: Period) => void;
+  data: ForecastPeriod[];
+  onSelect: (period: ForecastPeriod) => void;
   selected: string;
 };
 
@@ -41,14 +35,14 @@ export default function SelectPeriod({
   );
   const onSelectItem = useCallback(
     (item: string) => {
-      const selectedPeriod = data.find((period) => period.time === item);
+      const selectedPeriod = data.find((period) => period.timestamp === item);
       if (selectedPeriod) {
         onSelect(selectedPeriod);
       }
     },
     [data, onSelect],
   );
-  const timeData = data.map((period) => period.time);
+  const timeData = data.map((period) => period.timestamp);
   return (
     <Select
       containerStyle={containerStyle ?? {}}
@@ -62,7 +56,7 @@ export default function SelectPeriod({
 }
 
 type SelectPeriodItemProps = {
-  period: Period;
+  period: ForecastPeriod;
   selected: boolean;
 };
 
@@ -76,9 +70,9 @@ function SelectPeriodItem({ period, selected }: SelectPeriodItemProps) {
   }
   return (
     <View style={itemStyle}>
-      <Text style={textStyle}>{new Date(period.time).getHours()}h</Text>
-      <WeatherIcon type={period.weather} size={spacing(6)} />
-      <Text style={[textStyle, styles.tempText]}>{period.temp}º</Text>
+      <Text style={textStyle}>{new Date(period.timestamp).getHours()}h</Text>
+      <WeatherIcon type={period.weather.type} size={spacing(6)} />
+      <Text style={[textStyle, styles.tempText]}>{period.temp.value}º</Text>
     </View>
   );
 }
