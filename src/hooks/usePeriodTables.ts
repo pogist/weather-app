@@ -32,12 +32,12 @@ function createTemp(temp?: ForecastPeriod['temp']): TableItem[] {
     {
       id: 'temp_min',
       title: 'Mínima',
-      value: temp.min ? `${temp.min}ºC` : '--',
+      value: temp.min ? `${temp.min}ºC` : '–',
     },
     {
       id: 'temp_max',
       title: 'Máxima',
-      value: temp.max ? `${temp.max}ºC` : '--',
+      value: temp.max ? `${temp.max}ºC` : '–',
     },
     {
       id: 'feels_like',
@@ -54,13 +54,15 @@ function createRain(rain?: ForecastPeriod['rain']): TableItem[] {
   return [
     {
       id: 'rain',
-      title: 'Volume nas últimas 3h',
-      value: rain.volume ? `${rain.volume}mm` : '--',
+      title: 'Volume',
+      value: rain.volume ? `${rain.volume}mm` : '–',
     },
     {
       id: 'pop',
       title: 'Chance de precipitação',
-      value: rain.precipitation ? `${rain.precipitation}%` : '--',
+      value: rain.precipitation
+        ? `${Math.round(rain.precipitation * 100)}%`
+        : '–',
     },
   ];
 }
