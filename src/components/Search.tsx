@@ -1,8 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useCallback, useContext } from 'react';
 import {
+  NativeSyntheticEvent,
   StyleProp,
   StyleSheet,
-  TextInputProps,
+  TextInputSubmitEditingEventData,
   View,
   ViewStyle,
 } from 'react-native';
@@ -15,7 +16,7 @@ type SearchProps = {
   debounce?: number;
   loading?: boolean;
   onChangeText?: (text: string) => void;
-  onSubmit?: TextInputProps['onSubmitEditing'];
+  onSubmit?: (searchTerm: string) => void;
   placeholder?: string;
   style?: StyleProp<ViewStyle>;
 };
@@ -30,6 +31,12 @@ export default function Search({
 }: SearchProps) {
   const theme = useContext(ThemeContext);
   const styles = useStyles(themedStyles);
+  const onSubmitInput = useCallback(
+    (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => {
+      onSubmit?.(e.nativeEvent.text);
+    },
+    [onSubmit],
+  );
   return (
     <View style={[styles.container, style ?? {}]}>
       <AutocompleteDropdown
@@ -40,7 +47,7 @@ export default function Search({
         useFilter={false}
         closeOnSubmit
         onChangeText={onChangeText}
-        onSubmit={onSubmit}
+        onSubmit={onSubmitInput}
         showChevron={false}
         inputContainerStyle={styles.inputContainer}
         rightButtonsContainerStyle={styles.rightButtonsContainer}
