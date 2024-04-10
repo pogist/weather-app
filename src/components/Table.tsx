@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import { createStyles, spacing, useStyles } from '../styling';
 
-type TableItem = {
+export type TableItem = {
   id: string;
   title: string;
   value: string;
