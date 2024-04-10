@@ -17,10 +17,10 @@ export default function applySpec(raw: ForecastResponse): Forecast {
         volume: item.rain?.['3h'],
       },
       temp: {
-        feelsLike: item.main.feels_like,
-        max: item.main.temp_max,
-        min: item.main.temp_min,
-        value: item.main.temp,
+        feelsLike: Math.round(item.main.feels_like),
+        max: Math.round(item.main.temp_max),
+        min: Math.round(item.main.temp_min),
+        value: Math.round(item.main.temp),
       },
       weather: {
         description: capitalize(item.weather[0].description),
