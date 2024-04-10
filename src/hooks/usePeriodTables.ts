@@ -29,8 +29,16 @@ function createTemp(temp?: ForecastPeriod['temp']): TableItem[] {
   }
   return [
     { id: 'temp', title: 'Atual', value: `${temp.value}ºC` },
-    { id: 'temp_min', title: 'Mínima', value: `${temp.min}ºC` },
-    { id: 'temp_max', title: 'Máxima', value: `${temp.max}ºC` },
+    {
+      id: 'temp_min',
+      title: 'Mínima',
+      value: temp.min ? `${temp.min}ºC` : '--',
+    },
+    {
+      id: 'temp_max',
+      title: 'Máxima',
+      value: temp.max ? `${temp.max}ºC` : '--',
+    },
     {
       id: 'feels_like',
       title: 'Sensação térmica',

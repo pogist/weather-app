@@ -33,8 +33,8 @@ export default function Home() {
   const dates = groupedPeriods ? Object.keys(groupedPeriods) : [];
   const periods =
     groupedPeriods && selectedDate ? groupedPeriods[selectedDate] : [];
-  const period = periods.find((p) => p.timestamp === selectedPeriod) ?? null;
 
+  const period = periods.find((p) => p.timestamp === selectedPeriod) ?? null;
   const tables = usePeriodTables(period);
 
   const render = () => {

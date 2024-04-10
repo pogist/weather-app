@@ -27,8 +27,8 @@ export type ForecastPeriod = {
   };
   temp: {
     feelsLike: number;
-    max: number;
-    min: number;
+    max?: number;
+    min?: number;
     value: number;
   };
   weather: {
