@@ -1,6 +1,7 @@
+import type { LocationCoord } from '../../types';
+
 export type ForecastRequest = {
-  lat: number;
-  long: number;
+  coord: LocationCoord;
 };
 
 export type ForecastResponse = {

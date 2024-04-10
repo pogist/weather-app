@@ -42,3 +42,8 @@ export type ForecastPeriod = {
   };
   timestamp: string;
 };
+
+export type LocationCoord = {
+  lat: number;
+  long: number;
+};

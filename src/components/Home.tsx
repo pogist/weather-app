@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { useForecast, useGroupedPeriods, usePeriodTables } from '../hooks';
@@ -16,7 +16,7 @@ export default function Home() {
   const styles = useStyles(themedStyles);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [selectedPeriod, setSelectedPeriod] = useState<string | null>(null);
-  const [forecast, loading] = useForecast();
+  const [forecast, setLocation, loading] = useForecast();
   const groupedPeriods = useGroupedPeriods(forecast);
 
   useEffect(() => {
@@ -36,6 +36,13 @@ export default function Home() {
 
   const period = periods.find((p) => p.timestamp === selectedPeriod) ?? null;
   const tables = usePeriodTables(period);
+
+  const onSubmit = useCallback(
+    (searchTerm: string) => {
+      setLocation(searchTerm);
+    },
+    [setLocation],
+  );
 
   const render = () => {
     return (
@@ -105,8 +112,9 @@ export default function Home() {
         contentContainerStyle={styles.scrollViewContent}>
         <Search
           loading={loading}
-          style={styles.search}
+          onSubmit={onSubmit}
           placeholder="Buscar cidade"
+          style={styles.search}
         />
         {loading ? (
           <Loading

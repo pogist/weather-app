@@ -1,13 +1,13 @@
 import { NativeModules } from 'react-native';
 
+import type { LocationCoord } from '../types';
+
 const Geocoding = NativeModules.Geocoding;
 
-type LatLong = { lat: number; long: number };
-
 export type GeocodingModule = {
-  getLocation: (name: string) => Promise<LatLong>;
+  getCoord: (name: string) => Promise<LocationCoord>;
 };
 
 export default {
-  getLocation: async (name: string) => Geocoding.getLocation(name),
+  getCoord: async (name: string) => Geocoding.getLocation(name),
 } as GeocodingModule;

@@ -1,9 +1,11 @@
 import { NativeModules, PermissionsAndroid, Platform } from 'react-native';
 
+import type { LocationCoord } from '../types';
+
 const Location = NativeModules.Location;
 const permission = PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION;
 
-async function getCurrent(): Promise<{ lat: number; long: number }> {
+async function getCurrent(): Promise<LocationCoord | null> {
   if (Platform.OS === 'android') {
     return Location.getCurrent();
   }
@@ -20,7 +22,7 @@ async function getCurrent(): Promise<{ lat: number; long: number }> {
       );
     });
   }
-  return { lat: 0, long: 0 };
+  return null;
 }
 
 async function isEnabled(): Promise<boolean> {
