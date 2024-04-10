@@ -15,9 +15,8 @@ export default function dateEqual(a: DateValue, b: DateValue): boolean {
     dateB = b;
   }
 
-  const equalDate = dateA.getUTCDate() === dateB.getUTCDate();
-  const equalMonth = dateA.getUTCMonth() === dateB.getUTCMonth();
-  const equalYear = dateA.getUTCFullYear() === dateB.getUTCFullYear();
-
+  const equalDate = dateA.getDate() === dateB.getDate();
+  const equalMonth = dateA.getMonth() === dateB.getMonth();
+  const equalYear = dateA.getFullYear() === dateB.getFullYear();
   return equalDate && equalMonth && equalYear;
 }
