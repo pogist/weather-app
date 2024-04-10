@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 
-import { useForecast } from '../hooks';
+import { useForecast, useGroupedPeriods, usePeriodTables } from '../hooks';
 import { createStyles, spacing, useStyles } from '../styling';
-import { WeatherType } from '../types';
+
 import Loading from './Loading';
 import Location from './Location';
 import Search from './Search';
@@ -12,111 +12,30 @@ import SelectPeriod from './SelectPeriod';
 import Summary from './Summary';
 import Table from './Table';
 
-type Item = {
-  id: string;
-  title: string;
-};
-
-const suggestionItems: Item[] = [];
-for (let i = 0; i < 25; i++) {
-  suggestionItems.push({
-    id: `${i}`,
-    title: `item_${i}`,
-  });
-}
-
-const dates: string[] = [
-  '2024-04-07 12:00:00',
-  '2024-04-08 12:00:00',
-  '2024-04-09 12:00:00',
-  '2024-04-10 12:00:00',
-  '2024-04-11 12:00:00',
-];
-
-type Period = {
-  time: string;
-  temp: number;
-  weather: WeatherType;
-};
-
-const forecastPeriods: Period[] = [
-  {
-    time: '2024-04-07 12:00:00',
-    temp: 28,
-    weather: 'rain',
-  },
-  {
-    time: '2024-04-07 13:00:00',
-    temp: 29,
-    weather: 'drizzle',
-  },
-  {
-    time: '2024-04-07 14:00:00',
-    temp: 24,
-    weather: 'thunderstorm',
-  },
-  {
-    time: '2024-04-07 15:00:00',
-    temp: 26,
-    weather: 'rain',
-  },
-  {
-    time: '2024-04-07 16:00:00',
-    temp: 12,
-    weather: 'snow',
-  },
-  {
-    time: '2024-04-07 17:00:00',
-    temp: 30,
-    weather: 'clear',
-  },
-  {
-    time: '2024-04-07 18:00:00',
-    temp: 28,
-    weather: 'clouds',
-  },
-  {
-    time: '2024-04-07 19:00:00',
-    temp: 27,
-    weather: 'atmosphere',
-  },
-];
-
-const tempTable = [
-  { id: 'temp', title: 'Atual', value: '31ºC' },
-  { id: 'temp_min', title: 'Mínima', value: '28ºC' },
-  { id: 'temp_max', title: 'Máxima', value: '31ºC' },
-  { id: 'feels_like', title: 'Sensação térmica', value: '32ºC' },
-];
-
-const atmTable = [
-  { id: 'humidity', title: 'Umidade relativa', value: '70%' },
-  { id: 'visibility', title: 'Visibilidade', value: '+10km' },
-  { id: 'pressure', title: 'Pressão', value: '1011hPa' },
-];
-
-const rainTable = [
-  { id: 'rain', title: 'Volume nas últimas 3h', value: '0.33mm' },
-  { id: 'pop', title: 'Chance de precipitação', value: '51%' },
-];
-
-const windTable = [
-  { id: 'deg', title: 'Direção', value: '111º' },
-  { id: 'speed', title: 'Velocidade', value: '3.77 m/seg' },
-  { id: 'gust', title: 'Rajada', value: '4.41 m/seg' },
-];
-
 export default function Home() {
   const styles = useStyles(themedStyles);
-  const [selectedDate, setSelectedDate] = useState(dates[0]);
-
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [selectedPeriod, setSelectedPeriod] = useState<string | null>(null);
   const [forecast, loading] = useForecast();
+  const groupedPeriods = useGroupedPeriods(forecast);
 
-  const onSelectDate = (date: string) => {
-    if (date !== selectedDate) {
-      setSelectedDate(date);
+  useEffect(() => {
+    if (groupedPeriods) {
+      const firstDate = Object.keys(groupedPeriods)[0];
+      const firstPeriod = groupedPeriods[firstDate][0];
+      setSelectedDate(firstDate);
+      if (firstPeriod) {
+        setSelectedPeriod(firstPeriod.timestamp);
+      }
     }
-  };
+  }, [groupedPeriods]);
+
+  const dates = groupedPeriods ? Object.keys(groupedPeriods) : [];
+  const periods =
+    groupedPeriods && selectedDate ? groupedPeriods[selectedDate] : [];
+  const period = periods.find((p) => p.timestamp === selectedPeriod) ?? null;
+
+  const tables = usePeriodTables(period);
 
   const render = () => {
     return (
@@ -137,33 +56,38 @@ export default function Home() {
         <SelectDate
           containerStyle={styles.selectDate}
           data={dates}
-          onSelect={onSelectDate}
-          selected={selectedDate}
+          onSelect={(date) => {
+            setSelectedDate(date);
+            if (groupedPeriods) {
+              setSelectedPeriod(groupedPeriods[date][0].timestamp);
+            }
+          }}
+          selected={selectedDate!}
         />
         <SelectPeriod
           containerStyle={styles.selectPeriod}
-          data={forecastPeriods}
-          onSelect={(period) => onSelectDate(period.time)}
-          selected={selectedDate}
+          data={periods}
+          onSelect={(p) => setSelectedPeriod(p.timestamp)}
+          selected={selectedPeriod!}
         />
         <Table
           containerStyle={styles.table}
-          data={tempTable}
+          data={tables.temp}
           headerTitle="Temperatura"
         />
         <Table
           containerStyle={styles.table}
-          data={rainTable}
+          data={tables.rain}
           headerTitle="Chuva"
         />
         <Table
           containerStyle={styles.table}
-          data={atmTable}
+          data={tables.atmo}
           headerTitle="Atmosfera"
         />
         <Table
           containerStyle={styles.table}
-          data={windTable}
+          data={tables.wind}
           headerTitle="Vento"
         />
       </>
@@ -183,7 +107,6 @@ export default function Home() {
           loading={loading}
           style={styles.search}
           placeholder="Buscar cidade"
-          suggestions={suggestionItems}
         />
         {loading ? (
           <Loading
