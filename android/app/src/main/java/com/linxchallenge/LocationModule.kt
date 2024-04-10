@@ -1,10 +1,6 @@
 package com.linxchallenge
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.content.pm.PackageManager
-import androidx.annotation.RequiresPermission
-import androidx.core.app.ActivityCompat
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
