@@ -50,15 +50,15 @@ export default function Home() {
         <Location
           city={forecast!.city}
           containerStyle={styles.location}
-          date={forecast!.timestamp}
+          date={period!.timestamp}
         />
         <Summary
           containerStyle={styles.summary}
           sunriseTime={forecast!.sunrise}
           sunsetTime={forecast!.sunset}
-          temp={forecast!.periods[0].temp.value}
-          weather={forecast!.periods[0].weather.type}
-          weatherDesc={forecast!.periods[0].weather.description}
+          temp={period!.temp.value}
+          weather={period!.weather.type}
+          weatherDesc={period!.weather.description}
         />
         <SelectDate
           containerStyle={styles.selectDate}
