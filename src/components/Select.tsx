@@ -15,6 +15,7 @@ export type SelectRenderItemInfo = {
 };
 
 type SelectProps = {
+  compare?: (a: string, b: string) => boolean;
   containerStyle?: StyleProp<ViewStyle>;
   contentContainerStyle?: StyleProp<ViewStyle>;
   data: string[];
@@ -24,6 +25,7 @@ type SelectProps = {
 };
 
 export default function Select({
+  compare,
   containerStyle,
   contentContainerStyle,
   data,
@@ -42,14 +44,16 @@ export default function Select({
         }
         return { opacity: 0.7 };
       };
-      const selected: boolean = item === selectedItem;
+      const selected: boolean = compare
+        ? compare(item, selectedItem)
+        : item === selectedItem;
       return (
         <Pressable hitSlop={14} style={pressedStyle} onPress={onPress}>
           {renderSelectItem({ index, item, selected })}
         </Pressable>
       );
     },
-    [selectedItem, onSelectItem, renderSelectItem],
+    [compare, selectedItem, onSelectItem, renderSelectItem],
   );
   const keyExtractor = useCallback((item: string) => item, []);
   return (
