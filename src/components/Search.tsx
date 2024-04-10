@@ -1,58 +1,47 @@
-import React, { useCallback, useContext } from 'react';
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import React, { useContext } from 'react';
 import {
-  AutocompleteDropdown,
-  type TAutocompleteDropdownItem,
-} from 'react-native-autocomplete-dropdown';
+  StyleProp,
+  StyleSheet,
+  TextInputProps,
+  View,
+  ViewStyle,
+} from 'react-native';
+import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 import Icon from 'react-native-vector-icons/Feather';
 
 import { ThemeContext, createStyles, spacing, useStyles } from '../styling';
-
-type SearchSuggestion = {
-  id: string;
-  title: string | null;
-};
 
 type SearchProps = {
   debounce?: number;
   loading?: boolean;
   onChangeText?: (text: string) => void;
-  onSelectSuggestion?: (suggestion: SearchSuggestion) => void;
+  onSubmit?: TextInputProps['onSubmitEditing'];
   placeholder?: string;
   style?: StyleProp<ViewStyle>;
-  suggestions?: SearchSuggestion[];
 };
 
 export default function Search({
   debounce,
   loading,
   onChangeText,
-  onSelectSuggestion,
+  onSubmit,
   placeholder,
   style,
-  suggestions,
 }: SearchProps) {
   const theme = useContext(ThemeContext);
   const styles = useStyles(themedStyles);
-
-  const onSelectItem = useCallback(
-    (item: TAutocompleteDropdownItem) => {
-      onSelectSuggestion?.(item);
-    },
-    [onSelectSuggestion],
-  );
-
   return (
     <View style={[styles.container, style ?? {}]}>
       <AutocompleteDropdown
         inputHeight={spacing(10)}
         clearOnFocus={false}
-        dataSet={suggestions}
         debounce={debounce}
         loading={loading}
         useFilter={false}
+        closeOnSubmit
         onChangeText={onChangeText}
-        onSelectItem={onSelectItem}
+        onSubmit={onSubmit}
+        showChevron={false}
         inputContainerStyle={styles.inputContainer}
         rightButtonsContainerStyle={styles.rightButtonsContainer}
         suggestionsListContainerStyle={styles.suggestion}
@@ -60,6 +49,7 @@ export default function Search({
         ItemSeparatorComponent={<View style={styles.separator} />}
         textInputProps={{
           style: styles.input,
+          returnKeyType: 'search',
           placeholder: placeholder,
           placeholderTextColor: theme.color.placeholder,
         }}
@@ -70,9 +60,6 @@ export default function Search({
         }
         ClearIconComponent={
           <Icon style={styles.icon} name="x-circle" size={16} />
-        }
-        ChevronIconComponent={
-          <Icon style={styles.icon} name="chevron-down" size={16} />
         }
       />
     </View>
