@@ -28,7 +28,7 @@ export default function Summary({
     <View style={[styles.container, containerStyle ?? {}]}>
       <View style={styles.weather}>
         <WeatherIcon type={weather} size={spacing(16)} />
-        <Text style={styles.temp}>{Math.round(temp)}º</Text>
+        <Text style={styles.temp}>{temp}º</Text>
       </View>
       <Text style={styles.weatherDesc}>{weatherDesc}</Text>
       <View style={styles.solarActivities}>
