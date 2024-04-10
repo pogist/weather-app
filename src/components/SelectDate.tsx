@@ -9,7 +9,7 @@ import {
 
 import { useWeekDay } from '../hooks';
 import { createStyles, spacing, useStyles } from '../styling';
-import { capitalize } from '../util';
+import { capitalize, dateEqual } from '../util';
 import Select, { type SelectRenderItemInfo } from './Select';
 
 type SelectDateProps = {
@@ -38,6 +38,7 @@ export default function SelectDate({
   );
   return (
     <Select
+      compare={dateEqual}
       containerStyle={containerStyle ?? {}}
       contentContainerStyle={styles.content}
       data={data}
@@ -57,16 +58,10 @@ function SelectDateItem({ date: dateString, style }: SelectDateItemProps) {
   const date = new Date(dateString);
   const weekDay = useWeekDay('short', date);
   return (
-    <Text style={style}>{isToday(date) ? 'Hoje' : capitalize(weekDay)}</Text>
+    <Text style={style}>
+      {dateEqual(date, new Date()) ? 'Hoje' : capitalize(weekDay)}
+    </Text>
   );
-}
-
-function isToday(date: Date) {
-  const now = new Date();
-  const equalDays = now.getDate() === date.getDate();
-  const equalMonths = now.getMonth() === date.getMonth();
-  const equalYears = now.getFullYear() === date.getFullYear();
-  return equalDays && equalMonths && equalYears;
 }
 
 const themedStyles = createStyles((theme) =>
